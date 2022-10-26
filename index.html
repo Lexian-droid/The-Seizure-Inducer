@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+    <h2>Hello World</h2>
+        <video id="test" src="coloride.webm" controls style="background-color: #000;"></video>
+    <p>Goodbye World</p>
+    <script>
+        // ask the user if they want to play the video
+        var play = confirm("Warning, Video contains flashing lights, and may cause harm to those with photosensitive epilepsy. Do you want to continue?");
+        // if they say yes, play the video
+        if (play) {
+            document.getElementById("test").play();
+        } else{
+            // and remove the video controls
+            document.getElementById("test").controls = false;
+            // change id to "dead"
+            document.getElementById("test").id = "dead";
+            // and change the width and height to 1280x720
+            document.getElementById("dead").style.width = "1280px";
+            document.getElementById("dead").style.height = "720px";
+            // change h2 to "Video disabled due to epilepsy warning being denied."
+            document.getElementsByTagName("h2")[0].innerHTML = "Video disabled due to epilepsy warning being denied.";
+            // change p to "to play the video, refresh the page."
+            document.getElementsByTagName("p")[0].innerHTML = "to play the video, refresh the page.";
+        }
+
+        // when the video is playing, remove controls and make loop
+        document.getElementById("test").addEventListener("play", function() {
+            this.removeAttribute("controls");
+            this.loop = true;
+            // delete all other html tags except video
+            document.body.innerHTML = "";
+            document.body.appendChild(this);
+            // make page full screen
+            document.documentElement.requestFullscreen();
+        });
+        // if user clicks on page, make full screen
+        document.body.addEventListener("click", function() {
+            document.documentElement.requestFullscreen();
+        });
+
+        // when user leaves full screen, make full screen again
+        document.addEventListener("fullscreenchange", function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            }
+        });
+
+        // if paused, resume
+        document.getElementById("test").addEventListener("pause", function() {
+            this.play();
+        });
+
+        // when video is playing
+        // generate random color repeatedly
+        // and make it the background color of the video and the body
+        document.getElementById("test").addEventListener("play", function() {
+            setInterval(function() {
+                var color = "#" + Math.floor(Math.random()*16777215).toString(16);
+                document.getElementById("test").style.backgroundColor = color;
+                document.body.style.backgroundColor = color;
+            }, 320);
+        });
+
+        // if video gets muted or unmuted, unmute it
+        document.getElementById("test").addEventListener("volumechange", function() {
+            this.muted = false;
+        });
+
+        // randomly change the size of the video
+        document.getElementById("test").addEventListener("play", function() {
+            setInterval(function() {
+                var width = Math.floor(Math.random() * 1000);
+                var height = Math.floor(Math.random() * 1000);
+                document.getElementById("test").style.width = width + "px";
+                document.getElementById("test").style.height = height + "px";
+            }, 320);
+        });
+
+        // randomly position the video
+        document.getElementById("test").addEventListener("play", function() {
+            setInterval(function() {
+                var x = Math.floor(Math.random() * 1000);
+                var y = Math.floor(Math.random() * 1000);
+                document.getElementById("test").style.position = "absolute";
+                document.getElementById("test").style.left = x + "px";
+                document.getElementById("test").style.top = y + "px";
+            }, 320);
+        });
+
+        // change title to random text
+        document.getElementById("test").addEventListener("play", function() {
+            setInterval(function() {
+                var text = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                document.title = text;
+            }, 320);
+        });
+
+    </script>
+</body>
+</html>
